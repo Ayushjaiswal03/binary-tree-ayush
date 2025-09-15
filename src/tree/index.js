@@ -1,58 +1,65 @@
-import React from 'react';
+import React, { useReducer, useState, useCallback } from 'react';
 import './index.css';
-import treeData from './data.json'; 
+import initialTreeData from './data.json';
+import { treeReducer } from './treeReducer';
 
-// Static tree data for Phase 1 layout rendering.
-// Will be replaced with dynamic import from data.json in Phase 2.
-// const treeData = {
-//   name: 'mammals',
-//   children: [
-//     { name: 'cheetah', children: [] },
-//     {
-//       name: 'bear',
-//       children: [
-//         { name: 'lion', children: [] },
-//         {
-//           name: 'dog',
-//           children: [
-//             { name: 'elephant', children: [] }
-//           ]
-//         }
-//       ]
-//     },
-//     { name: 'ape', children: [] }
-//   ]
-// };
+// Recursive component to render each node
+const TreeNode = React.memo(function TreeNode({ node, level, onAddChild }) {
+  const [inputValue, setInputValue] = useState('');
 
-// Recursive component to render tree nodes.
-// Uses ARIA roles for accessibility and semantic structure.
-function TreeNode({ node, level }) {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && inputValue.trim()) {
+      onAddChild(node.name, inputValue.trim());
+      setInputValue('');
+    }
+  };
+
   return (
     <li
       className={`tree-item item-level-${level}`}
       role="treeitem"
       aria-level={level + 1}
-      aria-selected={false} // Required for accessibility compliance
+      aria-selected={false}
+      aria-expanded={node.children.length > 0}
+      aria-label={`Tree node: ${node.name}`}
     >
-      {node.name}
-      {node.children?.length > 0 && (
+      <span>{node.name}</span>
+      <input
+        type="text"
+        placeholder="Add child"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className="tree-input"
+      />
+      {node.children.length > 0 && (
         <ul className="tree-list" role="group">
           {node.children.map((child, idx) => (
-            <TreeNode key={idx} node={child} level={level + 1} />
+            <TreeNode
+              key={`${child.name}-${idx}`}
+              node={child}
+              level={level + 1}
+              onAddChild={onAddChild}
+            />
           ))}
         </ul>
       )}
     </li>
   );
-}
+});
 
-// Root component rendering the full tree.
-// Will later be enhanced with dynamic data and interactions.
+// Root component
 export default function Tree() {
+  const [treeData, dispatch] = useReducer(treeReducer, initialTreeData);
+
+  const handleAddChild = useCallback((parentName, childName) => {
+    dispatch({ type: 'ADD_CHILD', payload: { parentName, childName } });
+  }, []);
+
   return (
     <div className="tree">
       <ul className="tree-list" role="tree">
-        <TreeNode node={treeData} level={0} />
+        <TreeNode node={treeData} level={0} onAddChild={handleAddChild} />
       </ul>
     </div>
   );

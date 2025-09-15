@@ -8,30 +8,45 @@
     font-family: monospace;
   }
   
-  /* Base list styling */
   .tree-list {
-    list-style-type: none; /* Removes default bullet points */
-    padding-left: 0;        /* Removes default list padding */
+    list-style-type: none;
+    padding-left: 0;
   }
   
-  /* Indentation for nested lists */
   .tree-list .tree-list {
     padding-left: 20px;
   }
   
-  /* Tree item styling */
   .tree-item {
     padding-left: 10px;
-    font-size: clamp(14px, 2vw, 18px); /* Responsive font sizing */
+    font-size: clamp(14px, 2vw, 18px);
+    transition: background-color 0.2s ease;
+    margin-bottom: 6px;
   }
   
-  /* Indentation levels */
+  .tree-item:hover {
+    /* background-color: #ddd; */
+    cursor: pointer;
+  }
+  
   .item-level-0 { margin-left: 0; }
   .item-level-1 { margin-left: 20px; }
   .item-level-2 { margin-left: 40px; }
   .item-level-3 { margin-left: 60px; }
   
-  /* Mobile responsiveness */
+  .tree-input {
+    margin-left: 10px;
+    padding: 2px 6px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .tree-input:focus {
+    outline: none;
+    border-color: #888;
+  }
+  
   @media (max-width: 600px) {
     .tree-item {
       font-size: 14px;
@@ -42,6 +57,4 @@
       padding-left: 12px;
     }
   }
-  
-
   
