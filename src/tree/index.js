@@ -1,27 +1,28 @@
 import React from 'react';
 import './index.css';
+import treeData from './data.json'; 
 
 // Static tree data for Phase 1 layout rendering.
 // Will be replaced with dynamic import from data.json in Phase 2.
-const treeData = {
-  name: 'mammals',
-  children: [
-    { name: 'cheetah', children: [] },
-    {
-      name: 'bear',
-      children: [
-        { name: 'lion', children: [] },
-        {
-          name: 'dog',
-          children: [
-            { name: 'elephant', children: [] }
-          ]
-        }
-      ]
-    },
-    { name: 'ape', children: [] }
-  ]
-};
+// const treeData = {
+//   name: 'mammals',
+//   children: [
+//     { name: 'cheetah', children: [] },
+//     {
+//       name: 'bear',
+//       children: [
+//         { name: 'lion', children: [] },
+//         {
+//           name: 'dog',
+//           children: [
+//             { name: 'elephant', children: [] }
+//           ]
+//         }
+//       ]
+//     },
+//     { name: 'ape', children: [] }
+//   ]
+// };
 
 // Recursive component to render tree nodes.
 // Uses ARIA roles for accessibility and semantic structure.
