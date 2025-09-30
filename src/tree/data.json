@@ -1,5 +1,6 @@
 {
     "name": "mammals",
+    "isExpanded": true,
     "children": [
       { "name": "cheetah", "children": [] },
       {
